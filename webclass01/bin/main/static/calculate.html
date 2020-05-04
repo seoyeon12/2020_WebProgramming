@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <title>계산기</title>
+</head>
+<body>
+    <h1>계산기 과제</h1>
+    <h2>3202 이서연</h2>
+    <h4>첫번째 GET 방식</h4>
+    <form action="calculate" method="get">
+        <input type="number" name="num1">
+        <input type="number" name="num2">
+
+        <p>연산자를 선택해 주세요.</p>
+        <input type="radio" id="add" name="operator" value="add">
+        <label for="add">+</label><br>
+
+        <input type="radio" id="sub" name="operator" value="sub">
+        <label for="sub">-</label><br>
+
+        <input type="radio" id="mul" name="operator" value="mul">
+        <label for="mul">*</label><br>
+
+        <input type="radio" id="div" name="operator" value="div">
+        <label for="div">/</label>
+        <br><br>
+        <button>SUBMIT</button>
+    </form>
+
+    <br><br><br>
+    <h4>두번째 GET 방식</h4>
+    <input id="num1" type="number">
+    <input id="num2" type="number"><br><br>
+    <button onClick="plus()">+</button>
+    <button onClick="sub()">-</button>
+    <button onClick="mul()">*</button>
+    <button onClick="div()">/</button>
+
+    <script>
+        function plus() {
+            var num1 = $("#num1").val();
+            var num2 = $("#num2").val();
+            location.href = "plus/"+num1+"/"+num2;
+        }
+        function sub() {
+            var num1 = $("#num1").val();
+            var num2 = $("#num2").val();
+            location.href = "sub/"+num1+"/"+num2;
+        }
+        function mul() {
+            var num1 = $("#num1").val();
+            var num2 = $("#num2").val();
+            location.href = "mul/"+num1+"/"+num2;
+        }
+        function div() {
+            var num1 = $("#num1").val();
+            var num2 = $("#num2").val();
+            location.href = "div/"+num1+"/"+num2;
+        }
+    </script>
+
+</body>
+</html>

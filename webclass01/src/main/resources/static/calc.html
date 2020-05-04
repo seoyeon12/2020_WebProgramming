@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div>
+        <input type="text" id="num1">
+        <input type="text" id="num2">
+        <input type="radio" name="sign" value="plus">+
+        <input type="radio" name="sign" value="minus">-
+        <input type="radio" name="sign" value="multi">*
+        <input type="radio" name="sign" value="divide">/
+        <button onclick="calc()">계산</button><br>
+        <div id="response">결과</div>
+    </div>
+<script>
+    async function calc(){
+        let num1 = $('#num1').val().trim();
+        let num2 = $('#num2').val().trim();
+        let sign;
+        let signs = document.getElementsByName("sign");
+
+        for(let i = 0; i < signs.length; i++){
+            if(signs[i].checked == true){
+                sign = signs[i].value;
+                break;
+            }
+        }
+        //console.log(typeof(num1)," : ", num1);
+        if(num1 == "") num1 = "0";
+        if(num2 == "") num2 = "0";
+        if(sign == undefined) sign = "0";
+        console.log(num1,num2,sign);
+        let response = await $.get("/calculator/" + num1 + "/" + num2 + "/" + sign);
+        $('#response').html(JSON.stringify(response));
+    }
+</script>
+</body>
+</html>

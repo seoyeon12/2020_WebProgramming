@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Greeting</title>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <!-- 첫번째 GET 방식 -->
+    <form action="/greeting" method="get">
+        <input name="say">
+        <input name="to">
+        <button>SUBMIT</button>
+    </form>
+    <br>
+    <!-- 두번쨰 GET 방식 -->
+    <input id="say">
+    <input id="to">
+    <button onClick="send()">SUBMIT</button>
+    <br>
+    <!-- POST 방식 -->
+    <form action="/greeting2" method="POST">
+        <input name="say2">
+        <input name="to2">
+        <button>SUBMIT</button>
+    </form>
+    <br><br><br><br>
+    <button onclick="gotoCal()">계산기 과제</button>
+
+    <script>
+        function send() {
+            let say = $("#say").val();
+            let to = $("#to").val();
+            location.href = "greeting1/"+say+"/"+to;
+        }
+        function gotoCal() {
+            location.href = "calculate.html";
+        }
+    </script>
+</body>
+</html>
