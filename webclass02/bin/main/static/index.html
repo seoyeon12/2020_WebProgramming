@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        let userid;
+        $(function() {
+            //로그인 화면 show and hide
+            $('.login').click(function() {
+                if ($("#logindiv").css("display") == "none") {
+                    $('#logindiv').show();
+                } else {
+                    $('#logindiv').hide();
+                }
+            });
+            //유저 리스트 불러오기
+            $.ajax({
+                type: "GET",
+                url: "/user/list",
+                success: function(data) {
+                    console.log('회원', data);
+                    for (let i = 0; i < data.length; i++) {
+                        $(".UserList").append(
+                            "<ul style=' border-bottom: 1px solid black; display: inline-block; list-style: none; width: 100%; padding: 0;'>" +
+                            "<li style='display: inline; '>" +
+                            "<span>" + data[i].username + "</span>" +
+                            "<span style='padding-left: 10%'>" + data[i].email + "</span>" +
+                            "<span style=' padding-left: 15%; padding-right: 5%'>" + data[i]
+                            .password + "</span>" +
+                            "<form method='POST' id='uploadForm' enctype='multipart/form-data'>" +
+                            "<input type='file' name='image' id='file' class=" + data[i].id + " accept='image/jpeg, image/png, image/gif' /> " +
+                            "</form>" +
+                            "</li>" +
+                            "<li style='float: right;'>" +
+                            "<span class='userimagepath' id=" + data[i].id + ">" + data[i].storedPath + "</span>" +
+                            "<button class='UserUpdate' id=" + data[i].id + ">수정</button>" +
+                            "<button class='UserDelete' id=" + data[i].id + ">삭제</button>" +
+                            "<br>" +
+                            "<button>이미지</button>" +
+                            "<button class='UploadFile' id=" + data[i].id + ">파일 업로드</button>" +
+                            "<button class='OnFile' id=" + data[i].id + ">파일보기</button>" +
+                            "</li>" +
+                            "</ul>"
+                        );
+                    };
+                },
+                error: function(data, status, error) {
+                    console.log('회원 에러', data, status, error);
+                }
+            });
+            //유저 데이터 변경
+            $(document).on("click", '.UserUpdate', function() {
+                let UpdateId = $(this).attr('id');
+                let UpdateName = prompt('UserName Update', '');
+                let UpdateEmail = prompt('Email', '');
+                console.log(UpdateName, UpdateEmail, UpdateId);
+                $.ajax({
+                    type: 'put',
+                    contentType: "application/json",
+                    url: "/user/update/" + UpdateId,
+                    data: JSON.stringify({
+                        username: UpdateName,
+                        email: UpdateEmail
+                    }),
+                    success: function(response) {
+                        console.log('유저 수정');
+                    },
+                    error: function(request, status, error) {
+                        console.log('유저 수정 실패');
+                        console.log("code:" + request.status + "\n" + "message:" + request
+                            .responseText +
+                            "\n" + "error:" + error);
+                    }
+                });
+            });
+            //유저 삭제
+            $(document).on("click", '.UserDelete', function() {
+                let UpdateId = $(this).attr('id');
+                $.ajax({
+                    type: 'delete',
+                    contentType: "application/json",
+                    url: "/user/delete/" + UpdateId,
+
+                    success: function(response) {
+                        console.log('유저 삭제');
+                    },
+                    error: function(request, status, error) {
+                        console.log('유저 삭제 실패');
+                        console.log("code:" + request.status + "\n" + "message:" + request
+                            .responseText +
+                            "\n" + "error:" + error);
+                    }
+                });
+            });
+            //회원가입 하기
+            $(".register").click(function() {
+
+                let username = $("#name").val();
+                let email = $("#mail").val();
+                let password = $("#password").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/user/add",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                    }),
+                    success: function() {
+                        console.log("가입");
+                    },
+                    error: function(state, error) {
+                        console.log("가입 에러", state, error);
+                    }
+                });
+            });
+            //로그인 전송
+            $(".loginpost").click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "/user/login",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        email: $(".loginid").val(),
+                        password: $(".loginpassword").val()
+                    }),
+                    success: function(data) {
+                        userid = data.id;
+                        console.log("로그인 완료", data);
+                        $("#UserId").text(userid);
+                    },
+                    error: function(request, status, error) {
+                        console.log("로그인 실패", data);
+                        console.log("code:" + request.status + "\n" + "message:" + request
+                            .responseText +
+                            "\n" + "error:" + error);
+                    }
+                });
+            });
+            //댓글 목록 불러오기
+            $.ajax({
+                type: "GET",
+                url: "/comment/list",
+                success: function(data) {
+                    console.log("댓글", data);
+                    for (var i = 0; i < data.length; i++) {
+                        $(".UserComment").append(
+                            "<div style='border-bottom:1px solid black; display: flex;'>" +
+                            "<span>" + data[i].username + "</span>" +
+                            "<span style='padding-left: 10%;'>" + data[i].content + "</span>" +
+                            "<div style='width: 20%; margin: 0 auto;'>" +
+                            "<button class='CommentUpdate'" + "id=" + data[i].id +
+                            ">수정</button>" +
+                            "<button class='CommentDelete'" + "id=" + data[i].id +
+                            ">삭제</button>" +
+                            "</div>" +
+                            "</div>"
+                        );
+                    }
+                },
+                error: function(request, status, error) {
+                    console.log("code:" + request.status + "\n" + "message:" + request
+                        .responseText +
+                        "\n" + "error:" + error);
+                }
+            });
+            //댓글 전송
+            $(".CommentPost").click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "/comment/add",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        userId: $("#UserId").text(),
+                        content: $(".comment").val()
+                    }),
+                    success: function(data) {
+                        console.log("댓글 완료", data);
+                    },
+                    error: function(request, status, error) {
+                        console.log("댓글 에러", status, error);
+                        console.log("code:" + request.status + "\n" + "message:" + request
+                            .responseText +
+                            "\n" + "error:" + error);
+                    }
+                });
+            });
+            //Comment 수정
+            $(document).on("click", ".CommentUpdate", function() {
+                let UpdateComment = prompt('수정할 댓글 내용', '');
+                let Updateid = $(this).attr('id');
+                console.log(UpdateComment, Updateid);
+                $.ajax({
+                    type: "put",
+                    contentType: "application/json",
+                    url: "/comment/update/" + Updateid,
+                    data: JSON.stringify({
+                        userId: $("#UserId").text(),
+                        content: UpdateComment
+                    }),
+                    success: function() {
+                        console.log("댓글 수정");
+                    },
+                    error: function(request, status, error) {
+                        console.log("댓글 수정 실패");
+                        console.log("code:" + request.status + "\n" + "message:" + request
+                            .responseText +
+                            "\n" + "error:" + error);
+                    }
+                });
+            });
+            //댓글 삭제
+            $(document).on("click", ".CommentDelete", function() {
+                let Updateid = $(this).attr('id');
+                $.ajax({
+                    type: "delete",
+                    contentType: "application/json",
+                    url: "/comment/remove/" + Updateid,
+                    success: function(response) {
+                        console.log("댓글 삭제");
+                    },
+                    error: function(request, status, error) {
+                        console.log("댓글 삭제 실패");
+                        console.log("code:" + request.status + "\n" + "message:" + request
+                            .responseText +
+                            "\n" + "error:" + error);
+                    }
+                });
+            });
+            //image 보내기
+            $(document).on("click", ".UploadFile", function() {
+                let formData = new FormData($("#uploadForm")[0]);
+                console.log(formData);
+                if ($(this).attr('id') == userid) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/attachment",
+                        data: formData,
+                        enctype: 'multipart/form-data',
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        success: function(response) {
+                            console.log("파일 업로드");
+                            console.log(response);
+                        },
+                        error: function(request, status, error) {
+                            console.log("파일 업로드 실패");
+                            console.log("code:" + request.status + "\n" + "message:" + request
+                                .responseText +
+                                "\n" + "error:" + error);
+                        }
+                    });
+                } else
+                    console.log("로그인 안됨!");
+            });
+
+            //image 불러오기
+            $(document).on("click", ".OnFile", function() {
+                let type = 'user';
+                if ($(this).attr('id') == userid) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/attachment/" + type + "/" + userid,
+                        success: function(data) {
+                            console.log("파일 불러오기");
+                            if (userid == $(".userimagepath").attr('id')) {
+                                console.log('a', data);
+                                $(".userimagepath").text(data.originalName);
+                            }
+                        },
+                        error: function(request, status, error) {
+                            console.log("파일 불러오기 실패");
+                            console.log("code:" + request.status + "\n" + "message:" + request
+                                .responseText +
+                                "\n" + "error:" + error);
+                        }
+                    });
+                } else
+                    console.log("로그인 안됨!");
+            });
+
+            //input 값 초기화
+            $(".logincancel").click(function() {
+                $("#logindiv input").val('');
+            });
+
+            $(".cancel").click(function() {
+                $(".register-content input").val('');
+
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <h1>회원가입</h1>
+    <div class="register-content">
+        <span>username</span>
+        <input type="text" id="name">
+        <br>
+        <span>email</span>
+        <input type="text" id="mail">
+        <br>
+        <span>password</span>
+        <input type="text" id="password">
+        <br>
+        <button class="register">확인</button>
+        <button class="cancel">취소</button>
+    </div>
+    <h1>댓글</h1>
+    <span>content</span>
+    <input type="text" style="width:20%" class="comment">
+    <button class="CommentPost">확인</button>
+    <h1>회원목록</h1>
+    <div class="UserList">
+
+    </div>
+
+
+    <h1>댓글 목록</h1>
+    <div class="UserComment">
+
+    </div>
+
+    <div style="width: 40%; margin: auto; text-align: center; display: none;" id="logindiv">
+        <h2>로그인</h2>
+        <input type="text" placeholder="사용자 아이디" class="loginid">
+        <br>
+        <input type="text" placeholder="패스워드" class="loginpassword">
+        <br>
+        <button class="loginpost">확인</button>
+        <button class="logincancel">취소</button>
+    </div>
+    <button class="login">로그인</button>
+    <span id="UserId">로그인 중이 아닙니다.</span>
+</body>
