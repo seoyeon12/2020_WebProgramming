@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.hs.dgsw.webshopping.Domain.CartMapper">
+    <!-- CartMapper.java에 있는 add를 insert로 처리한다 -->
+    <insert id="add" parameterType="kr.hs.dgsw.webshopping.Domain.Cart">
+        <!-- 맵핑시켜준다 -->
+        insert into cart(userid, productid, price, amount, total)
+        valuse(#{userid}, #{productid}, #{price}, #{amount}, #{total})
+        <selectKey keyProperty="id" resultType="Long">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from cart
+        where id=#{id}
+    </delete>
+
+    <delete id="deleteByUserId" parameterType="Long">
+        delete from cart
+        where userid=#{userid}
+    </delete>
+
+    <select id="findById" parameterType="Long" resultType="kr.hs.dgsw.webshopping.Domain.Cart">
+        select userid, productid, price, amount, total
+        from cart
+        where id=#{id}
+    </select>
+
+    <select id="findByUserId" parameterType="Long" resultType="HashMap">
+        select c.id, c.userid as userid, c.productid as c.productid, p.name as productName,
+        c.price, c.amount, c.total
+        from cart c left join product p on c.productid = p.id
+        where c.userid=#{userid}
+    </select>
+</mapper>

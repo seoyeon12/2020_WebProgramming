@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.hs.dgsw.webshopping.Domain.ReviewMapper">
+    <!-- Product Mapper.java에 있는 add를 insert로 처리한다 -->
+    <insert id="add" parameterType="kr.hs.dgsw.webshopping.Domain.Review">
+        <!-- 맵핑시켜준다 -->
+        insert into review(productid, userid, content)
+        valuse(#{productid}, #{userid}, #{content})
+        <selectKey keyProperty="id" resultType="Long">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from review
+        where id=#{id}
+    </delete>
+
+    <update id="modify" parameterType="kr.hs.dgsw.webshopping.Domain.Review">
+        update review
+        set productid=#{productid}, username=#{username}, content=#{content}, modified=#{modified}
+        where id=#{id}
+    </update>
+
+    <select id="findByProductId" parameterType="Long" resultType="HashMap">
+        select r.id, r.productid as productId, r.userid as userId, u.account, r.content, r.created
+        from review r left join user u on r.userid = u.id
+        where productid=#{productid}
+    </select>
+</mapper>

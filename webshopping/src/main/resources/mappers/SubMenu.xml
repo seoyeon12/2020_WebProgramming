@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.hs.dgsw.webshopping.Domain.SubMenuMapper">
+    <!-- User Mapper.java에 있는 add를 insert로 처리한다 -->
+
+    <select id="findById" parameterType="Long" resultType="kr.hs.dgsw.webshopping.Domain.SubMenu">
+        select id, menuid, name from submenu
+        where id=#{id}
+    </select>
+
+    <!-- <select id="findByMenuId" parameterType="Long" resultType="kr.hs.dgsw.webshopping.Domain.SubMenu"> -->
+    <select id="findByMenuId" parameterType="Long" resultType="kr.hs.dgsw.webshopping.Domain.SubMenu">
+        select id, menuid, name from submenu
+        where menuid=#{menuid}
+    </select>
+</mapper>

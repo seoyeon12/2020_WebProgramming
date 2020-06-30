@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 // id, account, password, name, email, phone, profilePath, created, modified
 
 @Entity // DB 테이블 맵핑
-@Data //DATA
+@Data //DATA(setter/getter...)
 @NoArgsConstructor // 파라미터 없는 기본 생성자
 public class User {
     @Id // PK

@@ -10,7 +10,7 @@ import lombok.Data;
 //id, storedPath, postId
 
 @Entity // DB 테이블 맵핑
-@Data //DATA
+@Data //DATA(setter/getter...)
 public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //// auto_increment == 자동 값 생성 (옵션 : IDENTITY)=> 기본키 생성을 DBMS에 위임
