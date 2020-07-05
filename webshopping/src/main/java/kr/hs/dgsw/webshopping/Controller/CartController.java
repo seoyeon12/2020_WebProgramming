@@ -18,17 +18,17 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @PostMapping(value = "/api/cart")
+    @PostMapping(value = "/api/cart") //구현완료(상세보기)
     public Long add(@RequestBody Cart cart){
         return cartService.add(cart);
     }
 
-    @DeleteMapping(value = "/api/cart")
+    @DeleteMapping(value = "/api/cart") //구현완료(품목 삭제)
     public int deleteById(@Param("id") Long id){
         return cartService.deleteById(id);
     }
 
-    @DeleteMapping(value = "/api/cart/userid")
+    @DeleteMapping(value = "/api/cart/userid") //구현중(전체 삭제)
     public int deleteByUserId(@Param("userid") Long userid){
         return cartService.deleteByUserId(userid);
     }
@@ -38,7 +38,7 @@ public class CartController {
         return cartService.findById(id);
     }
 
-    @GetMapping("/api/cart/userid")
+    @GetMapping("/api/cart/user/userid") //구현완료(장바구니)
     public List<Cart> findByUserId(@Param("userid") Long userid){
         return cartService.findByUserId(userid);
     }

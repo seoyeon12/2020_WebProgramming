@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.hs.dgsw.webshopping.Domain.UserMapper">
         <!-- User Mapper.java에 있는 add를 insert로 처리한다 -->
         <insert id="add" parameterType="kr.hs.dgsw.webshopping.Domain.User">
                 <!-- 맵핑시켜준다 -->
-                insert into user(account, password, username, tel, phone, zipcode, address, email)
-                valuse(#{account}, #{password}, #{username}, #{tel}, #{phone}, #{zipcode}, #{address}, #{email})
+                insert into user(account, password, username, tel, phone, zipcode, address, email) 
+                values(#{account}, #{password}, #{username}, #{tel}, #{phone}, #{zipcode}, #{address}, #{email})
                 <selectKey keyProperty="id" resultType="Long">
                         select last_insert_id()
                 </selectKey>
@@ -14,7 +14,7 @@
 
         <update id="modify" parameterType="kr.hs.dgsw.webshopping.Domain.User">
                 update user
-                set password=#{password}, username=#{username}, tel=#{tel}, phone=#{phone}, zipcode=#{zipcode}, address=#{address}, email=#{email} 
+                set username=#{username}, tel=#{tel}, phone=#{phone}, zipcode=#{zipcode}, address=#{address}, email=#{email} 
                 where id=#{id}
         </update>
 

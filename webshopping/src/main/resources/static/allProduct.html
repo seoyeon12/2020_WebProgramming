@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>쇼핑몰</title>
-    <link rel="stylesheet" href="./css/header.css">
-    <link rel="stylesheet" href="./css/modal.css">
-    <link rel="stylesheet" href="./css/contents.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <!-- <script src="./js/index.js"></script> -->
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/nav.css">
+    <link rel="stylesheet" href="./css/contents.css">
+    <link rel="stylesheet" href="./css/modal.css">
     <script src="./js/motion.js"></script>
     <style>
         .card {
             width: 190px;
-            height: 250px;
+            height: 200px;
             background-color: #ffffff;
             border: 3px solid rgb(37, 39, 37);
             margin: 20px 30px;
@@ -27,7 +27,7 @@
         }
 
         .productBtn {
-            margin-top: 10px;
+            margin-top: -100px;
             padding: 10px;
             background-color: #ffffff;
             border: 1px solid rgb(37, 39, 37);
@@ -38,14 +38,18 @@
             color: #ffffff;
         }
 
+        .modal_bg {
+            display: none;
+        }
+
         #productModal {
             position: absolute;
             top: 50%;
             left: 50%;
-            margin-top: -325px;
+            margin-top: -350px;
             margin-left: -250px;
             width: 500px;
-            height: 650px;
+            height: 700px;
             background-color: #ffffff;
             border: 5px solid rgb(37, 39, 37);
             text-align: center;
@@ -77,6 +81,15 @@
             background-color: rgb(37, 39, 37);
             color: #ffffff;
         }
+        /* #notice{
+            width: 450px;
+            position: absolute;
+            line-height: 50px;
+            background-color: #f3ff4ecc;
+            bottom: 150px;
+            left: 50%;
+            margin-left: -225px;
+        } */
         .inputAmount{
             width: 450px;
             position: absolute;
@@ -130,10 +143,14 @@
             background-color: #ffffff;
             box-shadow: 0 0 2px;
         }
+        #all_product_btn{
+            margin-left: 10%;
+        }
     </style>
 </head>
 
-<body>
+<body style="position: relative; height: 100vh;">
+
     <div class="modal_bg"></div>
 
     <header id="header">
@@ -146,44 +163,23 @@
         </div>
     </header>
 
+    <nav>
+        <ul class="top_nav"></ul>
+    </nav>
+
     <section id="contents">
-        <div class="slide">
-            <ul>
-                <li><img src="https://cdn.pixabay.com/photo/2014/11/01/22/33/gold-513062_960_720.jpg" alt="#"></li>
-                <li><img src="https://cdn.pixabay.com/photo/2016/01/19/17/48/woman-1149911_960_720.jpg" alt="#"></li>
-                <li><img src="https://cdn.pixabay.com/photo/2018/08/23/03/26/south-korea-3625168_960_720.jpg" alt="#">
-                </li>
-            </ul>
-        </div>
         <div class="productList"></div>
-        <a href="allProduct.html"><button id="all_product_btn">전체상품 더보기</button></a>
     </section>
 
-
-    <div class="modal" id="loginBox">
-        <div class="inputs">
-            <input type="text" id="account" placeholder=" ID 입력해주세요">
-            <input type="password" id="password" placeholder=" PASSWORD 입력해주세요">
-        </div>
-        <div class="modal_btns" id="login_btn"><a href="#">확인</a></div>
-        <div class="modal_btns" id="Injoin"><a href="#">회원가입</a></div>
-    </div>
-
-    <div class="modal" id="joinBox">
-        <h2>회원가입 하기</h2>
-        <div class="inputs">
-            <input type="text" id="joinId" placeholder="  ID">
-            <input type="password" id="joinPW" placeholder="  PASSWORD">
-            <input type="text" id="name" placeholder="  이름">
-            <input type="tel" id="tel" placeholder="  전화번호( ' - ' 빼고 )">
-            <input type="tel" id="phone" placeholder="  폰번호( ' - ' 빼고 )">
-            <input type="text" id="address" placeholder="  주소">
-            <input type="email" id="email" placeholder="  이메일">
-        </div>
-        <div class="modal_btns" id="join_btn"><a href="#">가입하기</a></div>
-    </div>
+    <a href="allProduct.html"><button id="all_product_btn">전체상품보기</button></a>
 
     <div id="productModal" class="modal">
+        <div class="addReviewForm">
+            <label for="review">리뷰쓰기</label>
+            <textarea name="review" id="review" cols="40" rows="5"></textarea>
+            <button id="addreview" onclick="addreview()">리뷰제출하기</button>
+        </div>
+        <!-- <p id="notice">현재 주문가능 수량은 1개입니다. 추후 업데이트 예정입니다.</p> -->
         <div class="inputAmount">
             <label for="amount">수량</label>
             <input type="number" name="amount" id="amount" placeholder="0">
@@ -202,101 +198,42 @@
             console.log("Start Serve");
             console.log(sessionStorage.getItem('username'));
 
-            $.getProductAll();
-
             if (sessionStorage.getItem('username') !== null) {
-                console.log("이미 로그인이 된 상태입니다.");
-                $('#loginBox').fadeOut('fast');
-                $('.modal_bg').fadeOut('fast');
+                //console.log("이미 로그인이 된 상태입니다.");
                 $('#userName').html(sessionStorage.getItem('username'));
             } else {
-                //로그인 하기
-                $('#login_btn').click(function () {
-                    let loginId = $('#account').val();
-                    let loginPassWord = $('#password').val();
-                    console.log("로그인 버튼 클릭");
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/api/user/login',
-                        contentType: "application/json",
-                        data: JSON.stringify({
-                            account: loginId,
-                            password: loginPassWord,
-                        }),
-                        success: function (response) {
-                            if (response != "") {
-                                console.log("로그인 성공");
-                                console.log(response);
-                                //LocalStore에 User 정보 넣기
-                                $('#loginBox').fadeOut('fast');
-                                $('.modal_bg').fadeOut('fast');
-                                sessionStorage.setItem('userid', response.id);
-                                sessionStorage.setItem('username', response.username);
-                                alert("로그인 성공. 어서오십시오.");
-                                $('#userName').html(response.username);
-                            } else {
-                                console.log("로그인 실패");
-                                alert("아이디 혹은 비밀번호가 틀렸습니다. 다시 시도해주십시오.");
-                            }
-                        },
-                        error: function (state, error) {
-                            console.log("로그인 에러", state, error);
-                            alert("로그인 에러가 발생하였습니다.");
-                        }
-                    });
-                });
-                //회원가입 하러가기
-                $('#Injoin').click(function () {
-                    $('#joinBox').fadeIn('fast');
-                });
-                //회원가입 하기
-                $('#join_btn').click(function () {
-                    let joinAccount = $('#joinId').val();
-                    let joinPassword = $('#joinPW').val();
-                    let joinName = $('#name').val();
-                    let joinTel = $('#tel').val();
-                    let joinPhone = $('#phone').val();
-                    let joinAddress = $('#address').val();
-                    let joinEmail = $('#email').val();
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/api/user',
-                        contentType: "application/json",
-                        data: JSON.stringify({
-                            account: joinAccount,
-                            password: joinPassword,
-                            username: joinName,
-                            tel: joinTel,
-                            phone: joinPhone,
-                            zipcode: "",
-                            address: joinAddress,
-                            email: joinEmail
-                        }),
-                        success: function (response) {
-                            if (response != 1) {
-                                console.log("회원가입 실패");
-                                alert("회원가입에 실패했습니다. 다시 시도해주십시오.");
-                            } else {
-                                console.log("회원가입 성공");
-                                console.log(response);
-                                alert("회원가입 성공. 로그인 해주십시오.");
-                                $('#joinBox').css('display', 'none');
-                            }
-                        },
-                        error: function (state, error) {
-                            console.log("회원가입 에러", state, error);
-                            alert("회원가입 에러가 발생하였습니다.");
-                        }
-                    });
-                });
+                window.location.href = 'index.html';
             }
+
+            //Menu findAll
+            $.ajax({
+                type: "GET",
+                url: "/api/menu",
+                contentType: "application/json",
+                success: function (response) {
+                    console.log("MenuList 불러오기 성공");
+                    for (var i = 0; i < response.length; i++) {
+                        //console.log(JSON.stringify(response[i]));
+                        $('.top_nav').append(
+                            "<li> <a href= '#' class='MenuName'>" + response[i].name + "</a>" +
+                            "<ul class='submenu sub" + (i + 1) + "'></ul>" +
+                            "</li>"
+                        );
+                        $.getSubMenu(i + 1);
+                    }
+                },
+                error: function (state, error) {
+                    console.log("MenuList 불러오기 에러", state, error);
+                    alert("MenuList 불러오기 에러가 발생하였습니다.");
+                }
+            });
+
+            $.getProductAll();
         });
 
         //상세정보modal창 열기
-        function clickBtn(btn_num){
-            console.log(btn_num);
+        function clickBtn(btn_num) {
+            //console.log(btn_num);
             detailProductId = btn_num;
             $.getProductById(detailProductId);
             $('.modal_bg').fadeIn('fast');
@@ -304,7 +241,7 @@
         }
 
         //상세정보modal창 닫기
-        function closeModal(){
+        function closeModal() {
             $('.modal_bg').fadeOut('fast');
             $('#productModal').fadeOut('fast');
         }
@@ -313,8 +250,8 @@
         function addCart() {
             var amount = $('#amount').val();
             amount = parseInt(amount);
-            console.log(userid);
-            
+            //console.log(amount);
+            //console.log(typeof(amount));
             if(amount != ""){
                 $.ajax({
                     type: 'POST',
@@ -347,6 +284,104 @@
             }
         };
 
+        //서브메뉴 클릭 시 상품(Product findBySubMenuId) /api/product/subMenuid
+        function clickSubMenu(submenuid) {
+            //Product findBySubMenuId
+            $.ajax({
+                type: "GET",
+                url: '/api/product/submenuid?submenuid=' + submenuid,
+                contentType: "application/json",
+                success: function (response) {
+                    console.log("SubMenuid에 따른 물건 목록 불러오기 성공");
+                    
+                    $('.productList').remove();
+                    $('#contents').append(
+                        "<div class='productList'></div>"
+                    );
+
+                    if(response.length != 0){
+                        for(var i=0; i < response.length; i++){
+                            $('.productList').append(
+                                "<a href='#' class='cardLink " + i + "'>" +
+                                "<div class='card'>" +
+                                "<div class='productImg'>NO IMG</div>" +
+                                "<h3 class='productName'>" + response[i].name + "</h3>" +
+                                "<h3 class='productPrice'>" + response[i].price + "</h3>" +
+                                "<p class='productBrand'>" + response[i].factory + "</p>" +
+                                "<p class='productDetail'>" + response[i].details + "</p>" +
+                                "</div>" +
+                                "<button class='productBtn' onclick='clickBtn(" + response[i].id +
+                                ")'>자세히보기</button>" +
+                                "</a>"
+                            );
+                        }
+                    }else{
+                        $('.productList').append("<div>등록된 제품이 없습니다.</div>");
+                    }
+                },
+                error: function (state, error) {
+                    console.log("SubMenuid에 따른 물건 목록 불러오기 에러", state, error);
+                    alert("SubMenuid에 따른 물건 목록 불러오기 에러가 발생하였습니다.");
+                }
+            });
+        }
+
+        //리뷰 추가하기(Review add) /api/review
+        function addreview(){
+            var reviewContent = $('#review').val();
+            console.log(detailProductId + ":::" + userid + ":::" + reviewContent);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/review',
+                contentType: "application/json",
+                data: JSON.stringify({
+                    productid: detailProductId,
+                    userid: userid,
+                    content: reviewContent
+                }),
+                success: function (response) {
+                    console.log(response);
+                    if (response != 1) {
+                        console.log("리뷰 추가 실패");
+                        alert("리뷰 추가에 실패했습니다. 다시 시도해주십시오.");
+                    } else {
+                        console.log("리뷰 추가 성공");
+                        $('#review').val('');
+                        alert("리뷰에 추가하였습니다. 새로고침 후 확인하실 수 있습니다.");
+                    }
+                },
+                error: function (state, error) {
+                    console.log("리뷰 추가 에러", state, error);
+                    alert("리뷰 추가 에러가 발생하였습니다.");
+                }
+            });
+        }
+
+        //submenu 받아오기
+        $.getSubMenu = function (menuid) {
+            //SubMenu findByMenuId
+            $.ajax({
+                type: "GET",
+                url: '/api/subMenu/menuid?menuid=' + menuid,
+                contentType: "application/json",
+                success: function (response) {
+                    console.log("SubMenuList 불러오기 성공");
+                    var subul = $('.top_nav').children().find('.sub' + menuid);
+                    for (var i = 0; i < response.length; i++) {
+                        $(subul).append(
+                            "<li onclick='clickSubMenu(" + response[i].id + ")'><a href='#'>" +
+                            response[i].name + "</a></li>"
+                        );
+                    }
+                },
+                error: function (state, error) {
+                    console.log("SubMenuList 불러오기 에러", state, error);
+                    alert("SubMenuList 불러오기 에러가 발생하였습니다.");
+                }
+            });
+        };
+
         //product findAll 목록 받아오기
         $.getProductAll = function () {
             //product findAll
@@ -356,20 +391,22 @@
                 contentType: "application/json",
                 success: function (response) {
                     console.log("product 불러오기 성공");
-                    //console.log(response);
-                    //var subul = $('.top_nav').children().find('.sub' + menuid);
-                    for (var i = 0; i < 8; i++) {
+
+                    for (var i = 0; i < response.length; i++) {
                         $('.productList').append(
+                            "<a href='#' class='cardLink " + i + "'>" +
                             "<div class='card'>" +
                             "<div class='productImg'>NO IMG</div>" +
                             "<h3 class='productName'>" + response[i].name + "</h3>" +
                             "<h3 class='productPrice'>" + response[i].price + "</h3>" +
                             "<p class='productBrand'>" + response[i].factory + "</p>" +
                             "<p class='productDetail'>" + response[i].details + "</p>" +
+                            "</div>" +
                             "<button class='productBtn' onclick='clickBtn(" + response[i].id +
                             ")'>자세히보기</button>" +
-                            "</div>"
+                            "</a>"
                         );
+                        //var cardNum = $('.productList').children().find('.cardLink' + i);
                     }
                 },
                 error: function (state, error) {
@@ -394,11 +431,11 @@
                 contentType: "application/json",
                 success: function (response) {
                     console.log("productById 불러오기 성공");
-                    console.log(response);
+                    //console.log(response);
 
                     $('#productModal').append(
                         "<h2 class='modalName'>" + response.name + "</h2>" +
-                        "<h3 class='modalPrice'>" + response.price + "</h3>" +
+                        "<h3 class='modalPrice'>" + response.price + " 원</h3>" +
                         "<h5 class='modalFactory'>" + response.factory + "</h5>" +
                         "<h5 class='modalDetail'>" + response.details + "</h5>"
                     );
@@ -419,7 +456,7 @@
                 contentType: "application/json",
                 success: function (response) {
                     console.log("productById 불러오기 성공");
-                    console.log(response);
+                    //console.log(response);
                     $('#productModal').append(
                         "<div class='reviews'></div>"
                     );
@@ -438,8 +475,6 @@
                             "<div class='review'>등록된 리뷰가 없습니다.</div>"
                         );
                     }
-
-                    
                 },
                 error: function (state, error) {
                     console.log("review findByProductId 불러오기 에러", state, error);

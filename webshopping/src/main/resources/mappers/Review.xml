@@ -5,7 +5,7 @@
     <insert id="add" parameterType="kr.hs.dgsw.webshopping.Domain.Review">
         <!-- 맵핑시켜준다 -->
         insert into review(productid, userid, content)
-        valuse(#{productid}, #{userid}, #{content})
+        values(#{productid}, #{userid}, #{content})
         <selectKey keyProperty="id" resultType="Long">
             select last_insert_id()
         </selectKey>
@@ -18,12 +18,12 @@
 
     <update id="modify" parameterType="kr.hs.dgsw.webshopping.Domain.Review">
         update review
-        set productid=#{productid}, username=#{username}, content=#{content}, modified=#{modified}
+        set productid=#{productid}, content=#{content}
         where id=#{id}
     </update>
 
     <select id="findByProductId" parameterType="Long" resultType="HashMap">
-        select r.id, r.productid as productId, r.userid as userId, u.account, r.content, r.created
+        select r.id, r.productid as productid, r.userid as userid, u.account, r.content, r.created
         from review r left join user u on r.userid = u.id
         where productid=#{productid}
     </select>

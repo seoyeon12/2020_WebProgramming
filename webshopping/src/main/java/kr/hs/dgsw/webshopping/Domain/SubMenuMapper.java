@@ -6,6 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SubMenuMapper {
-    List<SubMenu> findByMenuId(Long menuId);
+    List<SubMenu> findByMenuId(Long menuid);
     SubMenu findById(Long id);
 }

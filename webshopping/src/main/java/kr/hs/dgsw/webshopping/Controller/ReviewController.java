@@ -20,7 +20,7 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
-    @PostMapping(value = "/api/review")
+    @PostMapping(value = "/api/review") //구현 중(리뷰 추가)
     public Long add(@RequestBody Review review){
         return reviewService.add(review);
     }
@@ -30,7 +30,7 @@ public class ReviewController {
         return reviewService.deleteById(id);
     }
 
-    @GetMapping(value = "/api/review/productid")
+    @GetMapping(value = "/api/review/productid") //구현완료(상세보기)
     public List<Review> findByProductId(@Param("productid") Long productid){
         return reviewService.findByProductId(productid);
     }

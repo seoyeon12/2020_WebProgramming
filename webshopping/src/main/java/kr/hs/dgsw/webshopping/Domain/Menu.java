@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Menu {
     private Long id;
-    private String menuname;
+    private String name;
 }

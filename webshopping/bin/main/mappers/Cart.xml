@@ -5,7 +5,7 @@
     <insert id="add" parameterType="kr.hs.dgsw.webshopping.Domain.Cart">
         <!-- 맵핑시켜준다 -->
         insert into cart(userid, productid, price, amount, total)
-        valuse(#{userid}, #{productid}, #{price}, #{amount}, #{total})
+        values(#{userid}, #{productid}, #{price}, #{amount}, #{total})
         <selectKey keyProperty="id" resultType="Long">
             select last_insert_id()
         </selectKey>
@@ -28,7 +28,7 @@
     </select>
 
     <select id="findByUserId" parameterType="Long" resultType="HashMap">
-        select c.id, c.userid as userid, c.productid as c.productid, p.name as productName,
+        select c.id, c.userid as userid, c.productid as productid, p.name as productname,
         c.price, c.amount, c.total
         from cart c left join product p on c.productid = p.id
         where c.userid=#{userid}

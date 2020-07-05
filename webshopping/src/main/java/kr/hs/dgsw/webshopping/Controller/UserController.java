@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping(value = "/api/user/id")
+    @GetMapping(value = "/api/user/id") //구현완료(회원정보 조회)
     public User findById(@Param("id") Long id){
         return userService.findById(id);
     }
@@ -34,22 +34,22 @@ public class UserController {
         return userService.findAll();
     }
 
-    @PostMapping(value ="/api/user")
+    @PostMapping(value ="/api/user") //구현완료(회원가입)
     public Long add(@RequestBody User user){
         return userService.add(user);
     }
 
-    @PutMapping(value ="/api/user")
+    @PutMapping(value ="/api/user") //구현완료(회원정보 수정)
     public int modify(@RequestBody User user){
         return userService.modify(user);
     }
 
-    @DeleteMapping(value ="/api/user")
+    @DeleteMapping(value ="/api/user") //구현예정(회원탈퇴)
     public int deleteById(@Param("id") Long id){
         return userService.deleteById(id);
     }
 
-    @PostMapping(value ="/api/user/login")
+    @PostMapping(value ="/api/user/login") //구현완료(로그인)
     public User login(@RequestBody User user){
         return userService.Login(user);
     }

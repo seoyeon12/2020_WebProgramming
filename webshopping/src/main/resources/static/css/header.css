@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: none;
+    color: rgb(37, 39, 37);
+    list-style: none;
+    text-decoration: none;
+    font-size: 16px;
+}
+body{
+    position: relative;
+    width: 100%;
+}
+#header{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+h1{
+    font-size: 18px;
+    line-height: 45px;
+}
+.topMini_nav{
+    width: 300px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    line-height: 45px;
+}
+.topMini_nav > a{
+    display: block;
+    width: 100px;
+    text-align: center;
+}

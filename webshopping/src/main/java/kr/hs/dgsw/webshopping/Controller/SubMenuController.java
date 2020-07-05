@@ -15,12 +15,12 @@ public class SubMenuController {
     @Autowired
     SubMenuService subMenuService;
 
-    @GetMapping(value = "/api/subMenu/menuid")
+    @GetMapping(value = "/api/subMenu/menuid") //구현 완료(메뉴에 따른 서브메뉴)
     public List<SubMenu> findByMenuId(@Param("menuid") Long menuid){
         return subMenuService.findByMenuId(menuid);
     }
 
-    @GetMapping(value = "/api/subMenu/uid")
+    @GetMapping(value = "/api/subMenu/id") 
     public SubMenu findById(@Param("id") Long id){
         return subMenuService.findById(id);
     }
