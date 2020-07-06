@@ -20,7 +20,7 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
-    @PostMapping(value = "/api/review") //구현 중(리뷰 추가)
+    @PostMapping(value = "/api/review") //구현 완료(리뷰 추가)
     public Long add(@RequestBody Review review){
         return reviewService.add(review);
     }

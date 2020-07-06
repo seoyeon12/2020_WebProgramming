@@ -45,7 +45,6 @@
                 success: function (response) {
                     console.log("성공!!!");
                     console.log(response);
-                    $('#userId').val(response.account);
                     $('#name').val(response.username);
                     $('#tel').val(response.tel);
                     $('#phone').val(response.phone);
@@ -61,7 +60,6 @@
 
         //회원정보 수정
         $.modify = function(userid){
-            let userAccount = $('#userId').val();
             let userName = $('#name').val();
             let userTel = $('#tel').val();
             let userPhone = $('#phone').val();
@@ -74,7 +72,6 @@
                 contentType: "application/json",
                 data: JSON.stringify({
                     id:userid,
-                    account: userAccount,
                     username: userName,
                     tel: userTel,
                     phone: userPhone,
@@ -113,7 +110,6 @@
 
     <div id="modifyBox">
         <div class="inputs">
-            <input type="text" id="userId" placeholder="  ID">
             <input type="text" id="name" placeholder="  이름">
             <input type="tel" id="tel" placeholder="  전화번호( ' - ' 빼고 )">
             <input type="tel" id="phone" placeholder="  폰번호( ' - ' 빼고 )">

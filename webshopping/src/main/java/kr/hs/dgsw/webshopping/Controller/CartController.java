@@ -28,7 +28,7 @@ public class CartController {
         return cartService.deleteById(id);
     }
 
-    @DeleteMapping(value = "/api/cart/userid") //구현중(전체 삭제)
+    @DeleteMapping(value = "/api/cart/userid") //구현완료(전체 삭제)
     public int deleteByUserId(@Param("userid") Long userid){
         return cartService.deleteByUserId(userid);
     }

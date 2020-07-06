@@ -49,7 +49,7 @@ public class ProductController {
         return productService.findByMenuId(menuid);
     }
 
-    @GetMapping(value = "/api/product/submenuid") //구현중...(서브메뉴에 따른 물건 리스트)
+    @GetMapping(value = "/api/product/submenuid") //구현완료(서브메뉴에 따른 물건 리스트)
     public List<Product> findBySubMenuId(@Param("submenuid") Long submenuid) {
         return productService.findBySubMenuId(submenuid);
     }

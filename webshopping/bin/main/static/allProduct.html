@@ -250,9 +250,9 @@
         function addCart() {
             var amount = $('#amount').val();
             amount = parseInt(amount);
-            //console.log(amount);
-            //console.log(typeof(amount));
-            if(amount != ""){
+            console.log(amount);
+            console.log(typeof(amount));
+            if(amount > 0){
                 $.ajax({
                     type: 'POST',
                     url: '/api/cart',
@@ -280,7 +280,7 @@
                     }
                 });
             }else{
-                alert("수량을 선택해주세요.");
+                alert("올바른 수량을 선택해주세요.");
             }
         };
 

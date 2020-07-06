@@ -195,8 +195,6 @@
     <script>
         let detailProductId = 0;
         let detailProductPrice = 0;
-        let userid = sessionStorage.getItem('userid');
-        userid = parseInt(userid);
 
         $(document).ready(function () {
             console.log("Start Serve");
@@ -313,9 +311,11 @@
         function addCart() {
             var amount = $('#amount').val();
             amount = parseInt(amount);
+            var userid = sessionStorage.getItem('userid');
+            userid = parseInt(userid);
             console.log(userid);
             
-            if(amount != ""){
+            if(amount > 0){
                 $.ajax({
                     type: 'POST',
                     url: '/api/cart',
@@ -343,7 +343,7 @@
                     }
                 });
             }else{
-                alert("수량을 선택해주세요.");
+                alert("올바른 수량을 선택해주세요.");
             }
         };
 
